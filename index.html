@@ -702,6 +702,48 @@
       });
     });
     document.getElementById('year').textContent=new Date().getFullYear();
-  </script>
+  </scri
+<script>
+(function(){
+  function debounce(fn, ms){ let t; return function(){ clearTimeout(t); t=setTimeout(fn, ms); };
+  }
+  var brandInp=document.getElementById('brand');
+  var modelInp=document.getElementById('model');
+  if(!brandInp||!modelInp) return;
+  var brandList=document.createElement('datalist');
+  brandList.id='brandList';
+  document.body.appendChild(brandList);
+  var modelList=document.createElement('datalist');
+  modelList.id='modelList';
+  document.body.appendChild(modelList);
+  brandInp.setAttribute('list','brandList');
+  modelInp.setAttribute('list','modelList');
+  brandInp.setAttribute('autocomplete','off');
+  modelInp.setAttribute('autocomplete','off');
+  async function loadBrands(){
+    try{
+      const r=await fetch('/api/brands.php');
+      const brands=await r.json();
+      brandList.innerHTML=(brands||[]).map(function(b){ return '<option value="'+b+'"></option>'; }).join('');
+    }catch(e){ console.warn('brands.php fail', e); }
+  }
+  var loadModels=debounce(async function(){
+    var brand=brandInp.value.trim();
+    if(!brand){ modelList.innerHTML=''; return; }
+    var q=modelInp.value.trim();
+    var url=new URL('/api/models_by_brand.php', window.location.origin);
+    url.searchParams.set('brand', brand);
+    if(q) url.searchParams.set('q', q);
+    try{
+      const r=await fetch(url);
+      const models=await r.json();
+      modelList.innerHTML=(models||[]).map(function(m){ return '<option value="'+m+'"></option>'; }).join('');
+    }catch(e){ console.warn('models_by_brand fail', e); }
+  }, 200);
+  window.addEventListener('DOMContentLoaded', loadBrands);
+  brandInp.addEventListener('change', function(){ modelInp.value=''; loadModels(); });
+  modelInp.addEventListener('input', loadModels);
+})();
+</</script>
 </body>
 </html>
