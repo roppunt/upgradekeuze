@@ -1,24 +1,4 @@
 <?php
-require __DIR__.'/config.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-  $rows = $pdo->query("SELECT pkey, value_cents, description FROM prices")->fetchAll();
-  json_out(['ok'=>true,'prices'=>$rows]);
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  if (empty($_SESSION['uid'])) json_out(['ok'=>false,'error'=>'Unauthorized'], 401);
-
-  $input = json_decode(file_get_contents('php://input'), true) ?? [];
-  // verwacht: {"pkey":"ssd_upgrade","value_cents":4500}
-  if (empty($input['pkey']) || !isset($input['value_cents'])) json_out(['ok'=>false,'error'=>'Invalid payload'], 400);
-
-  $stmt = $pdo->prepare("UPDATE prices SET value_cents=?, updated_at=NOW() WHERE pkey=?");
-  $stmt->execute([ (int)$input['value_cents'], (string)$input['pkey'] ]);
-  json_out(['ok'=>true]);
-}
-
-json_out(['ok'=>false,'error'=>'Method not allowed'], 405);
 
 if (!function_exists('get_prices')) {
   /**
@@ -59,3 +39,29 @@ if (!function_exists('get_prices')) {
     }
   }
 }
+
+$directAccess = realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__;
+if (!$directAccess) {
+  return;
+}
+
+require __DIR__.'/config.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+  $rows = $pdo->query("SELECT pkey, value_cents, description FROM prices")->fetchAll();
+  json_out(['ok'=>true,'prices'=>$rows]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (empty($_SESSION['uid'])) json_out(['ok'=>false,'error'=>'Unauthorized'], 401);
+
+  $input = json_decode(file_get_contents('php://input'), true) ?? [];
+  // verwacht: {"pkey":"ssd_upgrade","value_cents":4500}
+  if (empty($input['pkey']) || !isset($input['value_cents'])) json_out(['ok'=>false,'error'=>'Invalid payload'], 400);
+
+  $stmt = $pdo->prepare("UPDATE prices SET value_cents=?, updated_at=NOW() WHERE pkey=?");
+  $stmt->execute([ (int)$input['value_cents'], (string)$input['pkey'] ]);
+  json_out(['ok'=>true]);
+}
+
+json_out(['ok'=>false,'error'=>'Method not allowed'], 405);
