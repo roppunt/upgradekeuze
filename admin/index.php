@@ -3,7 +3,7 @@
 $rows = $pdo->query("SELECT pkey, value_cents, description FROM prices ORDER BY pkey")->fetchAll();
 ?>
 <!doctype html><html lang="nl"><meta charset="utf-8">
-<title>Admin – Prijzen</title>
+<title>Admin â€“ Prijzen</title>
 <style>
 body{font-family:sans-serif;max-width:760px;margin:40px auto}
 table{border-collapse:collapse;width:100%}
