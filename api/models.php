@@ -9,12 +9,6 @@ if (!function_exists('pcslim_get_pdo')) {
             return $pdoInstance;
         }
 
-        if (isset($GLOBALS['pdo']) && $GLOBALS['pdo'] instanceof PDO) {
-            $pdoInstance = $GLOBALS['pdo'];
-            return $pdoInstance;
-        }
-
-        require_once __DIR__ . '/config.php';
         global $pdo, $DB_HOST, $DB_NAME, $DB_USER, $DB_PASS;
 
         if ($pdo instanceof PDO) {
@@ -22,8 +16,18 @@ if (!function_exists('pcslim_get_pdo')) {
             return $pdoInstance;
         }
 
+        if (!isset($DB_HOST, $DB_NAME, $DB_USER, $DB_PASS)) {
+            require_once __DIR__ . '/config.php';
+        }
+
+        // Config.php maakt normaliter de $pdo-connectie aan. Controleer opnieuw.
+        if ($pdo instanceof PDO) {
+            $pdoInstance = $pdo;
+            return $pdoInstance;
+        }
+
         if (isset($DB_HOST, $DB_NAME, $DB_USER, $DB_PASS)) {
-            $pdoInstance = new PDO(
+            $pdo = new PDO(
                 "mysql:host={$DB_HOST};dbname={$DB_NAME};charset=utf8mb4",
                 $DB_USER,
                 $DB_PASS,
@@ -32,6 +36,7 @@ if (!function_exists('pcslim_get_pdo')) {
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 ]
             );
+            $pdoInstance = $pdo;
             return $pdoInstance;
         }
 
