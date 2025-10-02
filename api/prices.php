@@ -16,23 +16,14 @@ if (!function_exists('get_prices')) {
     ];
 
     try {
-      require_once __DIR__ . '/config.php';
-      global $pdo, $DB_HOST, $DB_NAME, $DB_USER, $DB_PASS;
+      global $pdo;
 
       if (!($pdo instanceof PDO)) {
-        if (!isset($DB_HOST, $DB_NAME, $DB_USER, $DB_PASS)) {
-          return $defaults;
+        if (!function_exists('pcslim_get_pdo')) {
+          require_once __DIR__ . '/models.php';
         }
 
-        $pdo = new PDO(
-          "mysql:host={$DB_HOST};dbname={$DB_NAME};charset=utf8mb4",
-          $DB_USER,
-          $DB_PASS,
-          [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-          ]
-        );
+        $pdo = pcslim_get_pdo();
       }
 
       $db = $pdo;
