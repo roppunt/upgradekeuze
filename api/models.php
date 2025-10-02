@@ -14,9 +14,10 @@ if (!function_exists('pcslim_get_pdo')) {
             return $pdoInstance;
         }
 
-        require __DIR__ . '/config.php';
+        require_once __DIR__ . '/config.php';
+        global $pdo, $DB_HOST, $DB_NAME, $DB_USER, $DB_PASS;
 
-        if (isset($pdo) && $pdo instanceof PDO) {
+        if ($pdo instanceof PDO) {
             $pdoInstance = $pdo;
             return $pdoInstance;
         }
