@@ -16,16 +16,31 @@ if (!function_exists('get_prices')) {
     ];
 
     try {
-      require __DIR__ . '/config.php';
-      $pdo = new PDO("mysql:host={$db_host};dbname={$db_name};charset=utf8mb4", $db_user, $db_pass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-      ]);
-      $q = $pdo->query("SHOW TABLES LIKE 'price_matrix'");
+      require_once __DIR__ . '/config.php';
+      global $pdo, $DB_HOST, $DB_NAME, $DB_USER, $DB_PASS;
+
+      if (!($pdo instanceof PDO)) {
+        if (!isset($DB_HOST, $DB_NAME, $DB_USER, $DB_PASS)) {
+          return $defaults;
+        }
+
+        $pdo = new PDO(
+          "mysql:host={$DB_HOST};dbname={$DB_NAME};charset=utf8mb4",
+          $DB_USER,
+          $DB_PASS,
+          [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+          ]
+        );
+      }
+
+      $db = $pdo;
+      $q = $db->query("SHOW TABLES LIKE 'price_matrix'");
       if (!$q || !$q->fetchColumn()) return $defaults;
 
       $map = $defaults;
-      $stmt = $pdo->query("SELECT `key`, `price_eur` FROM price_matrix");
+      $stmt = $db->query("SELECT `key`, `price_eur` FROM price_matrix");
       foreach ($stmt as $row) {
         $k = $row['key'];
         $v = number_format((float)$row['price_eur'], 2, ',', '.');
