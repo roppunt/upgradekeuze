@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PC Slim – Wij maken jouw computer weer als nieuw</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{
+      --primary:#245c8e;      /* donkerblauw */
+      --primary-600:#1d4b74;
+      --accent:#f39c12;       /* oranje accent */
+      --bg:#f4f6f9;
+      --text:#273142;
+      --muted:#6b778c;
+      --white:#ffffff;
+      --card:#ffffff;
+      --success:#22a06b;
+      --shadow:0 10px 25px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--bg);line-height:1.6}
+
+    /* Layout helpers */
+    .container{width:92%;max-width:1200px;margin:0 auto}
+    .btn{display:inline-block;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:600;transition:.25s;cursor:pointer;border:0}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-primary:hover{background:var(--primary-600);transform:translateY(-1px)}
+    .btn-outline{background:transparent;border:2px solid #fff;color:#fff}
+    .btn-outline:hover{background:#ffffff22}
+    .btn-alt{background:var(--accent);color:#fff}
+    .btn-alt:hover{filter:brightness(.95)}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff;color:var(--primary);font-weight:700;font-size:.8rem}
+
+    /* Header */
+    header{position:sticky;top:0;z-index:50;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.06)}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand .logo{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--primary),#2f76b2);display:grid;place-items:center;color:#fff;font-weight:800}
+    .brand .name{font-weight:800;font-size:1.25rem}
+    .brand .name span{color:var(--accent)}
+    nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
+    nav a{color:var(--text);text-decoration:none;font-weight:600;opacity:.9}
+    nav a:hover{opacity:1;color:var(--primary)}
+    .nav-cta{display:none}
+    @media (min-width:920px){ .nav-cta{display:block} }
+
+    /* Hero */
+    .hero{position:relative;background:linear-gradient(180deg,rgba(36,92,142,.9),rgba(36,92,142,.86)),url('https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;padding:90px 0;color:#fff}
+    .hero .grid{display:grid;gap:36px;align-items:center}
+    @media (min-width:980px){ .hero .grid{grid-template-columns:1.1fr .9fr} }
+    .hero h1{font-size:2.3rem;line-height:1.2;margin:.4rem 0 1rem}
+    @media (min-width:980px){ .hero h1{font-size:2.8rem} }
+    .hero p{opacity:.95;max-width:720px}
+    .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .hero-card{background:#fff;border-radius:14px;padding:20px;box-shadow:var(--shadow);color:var(--text)}
+    .hero-card h3{margin:0 0 10px;color:var(--primary)}
+    .hero-row{display:flex;gap:12px;align-items:flex-start;margin:10px 0}
+    .hero-icon{width:36px;height:36px;border-radius:10px;background:#eef4fb;display:grid;place-items:center;color:var(--primary)}
+
+    /* Inclusieve belofteband */
+    .welcome-band{background:#0f3f66;color:#fff;padding:14px 0;font-weight:600;text-align:center}
+
+    /* Sections */
+    section{padding:80px 0}
+    .section-title{text-align:center;margin-bottom:44px}
+    .section-title h2{font-size:1.9rem;margin:.2rem 0 .6rem;color:var(--primary)}
+    .section-title p{color:#e2e9f2;max-width:760px;margin:0 auto}
+
+    /* Services */
+    .cards{display:grid;gap:22px}
+    @media (min-width:900px){ .cards{grid-template-columns:repeat(3,1fr)} }
+    .card{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:26px;display:flex;flex-direction:column;height:100%}
+    .card-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+    .card .icon{width:44px;height:44px;border-radius:12px;background:#eef4fb;display:grid;place-items:center;color:var(--primary);font-size:1.2rem}
+    .price{color:var(--success);font-weight:800;margin:10px 0}
+    .card-footer{margin-top:auto}
+    .card-footer .price{margin-bottom:10px;font-weight:700;color:#22a06b}
+
+    /* Grids voor overige secties */
+    .aud{display:grid;gap:22px}
+    @media (min-width:900px){ .aud{grid-template-columns:repeat(3,1fr)} }
+    .aud .item{text-align:center;background:#fff;border-radius:14px;padding:28px;box-shadow:var(--shadow)}
+    .aud .item i{font-size:32px;color:var(--primary);margin-bottom:10px}
+
+    /* Pricing */
+    .pricing{display:grid;gap:22px}
+    @media (min-width:1000px){ .pricing{grid-template-columns:repeat(3,1fr)} }
+    .price-card{background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden;transform:translateZ(0)}
+    .price-top{background:var(--primary);color:#fff;padding:22px;text-align:center}
+    .price-top h3{margin:0;font-size:1.2rem}
+    .popular{position:absolute;right:18px;top:-12px;background:var(--accent);color:#fff;padding:4px 10px;border-radius:999px;font-weight:800;font-size:.8rem}
+    .price-body{padding:24px;text-align:center}
+    .money{font-size:2.2rem;font-weight:800;margin:8px 0 16px}
+    .features{list-style:none;padding:0;margin:0 0 18px}
+    .features li{padding:10px 0;border-bottom:1px solid #eef1f7}
+    .features li:last-child{border-bottom:none}
+    .price-cta{padding:0 24px 24px}
+
+    /* USP band (beloftes) */
+    .usp{background:var(--primary);color:#fff;padding:70px 0}
+    .usp-grid{display:grid;gap:26px;align-items:stretch}
+    @media (min-width:1000px){ .usp-grid{grid-template-columns:repeat(3,1fr)} }
+    .usp-box{background:#ffffff14;border:1px solid #ffffff26;border-radius:14px;padding:24px;text-align:center}
+    .usp-box i{font-size:34px;color:var(--accent);margin-bottom:12px}
+    .usp-box h3{margin:8px 0 6px}
+    .usp-box p{opacity:.95}
+
+    /* Contact */
+    .contact{display:grid;gap:26px}
+    @media (min-width:980px){ .contact{grid-template-columns:1fr 1.2fr} }
+    .info h3{color:var(--primary);margin:0 0 6px}
+    .info p{margin:4px 0;color:var(--muted)}
+    .contact form{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:24px}
+    .grid-2{display:grid;gap:14px}
+    @media (min-width:680px){ .grid-2{grid-template-columns:1fr 1fr} }
+    label{font-weight:600;font-size:.95rem;margin-bottom:6px;display:block}
+    input,select,textarea{width:100%;padding:12px 14px;border:1px solid #e4e7ee;border-radius:10px;font-size:1rem;outline:0;background:#fff}
+    textarea{min-height:140px;resize:vertical}
+    .form-row{margin-bottom:14px}
+
+    /* FAQ */
+    details{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:18px;margin-bottom:12px}
+    summary{cursor:pointer;font-weight:700;color:var(--primary)}
+    summary::-webkit-details-marker{display:none}
+    summary:after{content:"+";float:right;font-weight:800}
+    details[open] summary:after{content:"–"}
+    details p{margin:10px 0 0;color:#445166}
+
+    /* Footer */
+    footer{background:#1c2633;color:#cbd3df;padding:60px 0 28px;margin-top:50px}
+    .foot{display:grid;gap:30px}
+    @media (min-width:1000px){ .foot{grid-template-columns:2fr 1fr 1fr 1fr} }
+    .foot h4{color:#fff;margin:0 0 10px}
+    .foot a{color:#cbd3df;text-decoration:none}
+    .foot a:hover{color:#fff}
+    .copy{border-top:1px solid #2a3545;margin-top:26px;padding-top:18px;text-align:center;color:#94a1b2}
+
+	/* Online Check kaart: zorg dat niets eroverheen ligt */
+#card-online-check { position: relative; z-index: 1; }
+#card-online-check form { position: relative; z-index: 2; }
+
+/* Schakel overlays uit binnen deze kaart (stretched links, pseudo-elementen) */
+#card-online-check a.stretched-link,
+#card-online-check .card-link,
+#card-online-check::before,
+#card-online-check::after {
+  pointer-events: none !important;
+}
+
+/* Veiligheidsnet: alles in het formulier is klikbaar */
+#card-online-check form,
+#card-online-check form * {
+  pointer-events: auto !important;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">PC</div>
+        <div class="name">PC <span>Slim</span></div>
+      </div>
+      <nav aria-label="Hoofdmenu">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#diensten">Diensten</a></li>
+          <li><a href="#beloftes">Beloftes</a></li>
+          <li><a href="#werkwijze">Werkwijze</a></li>
+          <li><a href="#ervaringen">Ervaringen</a></li>
+          <li><a href="#tarieven">Tarieven</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary nav-cta" href="#contact">Neem contact op</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <span class="pill">Eerlijk advies • Snelle hulp</span>
+          <h1>Wij maken jouw computer weer als nieuw</h1>
+          <p>Upgrade naar Windows 11, of – als dat niet kan of de computer te traag wordt – overstappen naar Linux. Wij zorgen dat je computer soepel werkt — zonder gedoe, met duidelijke uitleg en vaste prijsafspraak.</p>
+          <div class="cta">
+            <a class="btn btn-alt" href="#diensten">Bekijk onze diensten</a>
+            <a class="btn btn-outline" href="#tarieven">Bekijk tarieven</a>
+          </div>
+        </div>
+        <div class="hero-card" role="complementary" aria-label="Wat je krijgt">
+          <h3>Wat je krijgt</h3>
+          <div class="hero-row">
+            <div class="hero-icon"><i class="fa-regular fa-circle-check"></i></div>
+            <div><strong>Upgrades zonder zorgen</strong><br><small>Wij regelen back-up, installatie en nazorg.</small></div>
+          </div>
+          <div class="hero-row">
+            <div class="hero-icon"><i class="fa-solid fa-gauge-high"></i></div>
+            <div><strong>Meer snelheid</strong><br><small>SSD-upgrade en genoeg geheugen voor een frisse start.</small></div>
+          </div>
+          <div class="hero-row">
+            <div class="hero-icon"><i class="fa-solid fa-shield-heart"></i></div>
+            <div><strong>Veilig & vertrouwd</strong><br><small>Updates en begrijpelijke uitleg.</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Inclusieve belofteband -->
+  <section class="welcome-band">
+    <div class="container">Iedereen welkom – jij bepaalt het tempo: rustige uitleg of snel geregeld. Vaste prijs, geen vakjargon.</div>
+  </section>
+
+  <!-- Diensten -->
+  <section id="diensten">
+    <div class="container">
+      <div class="section-title">
+        <h2>Onze Diensten</h2>
+        <p>Complete computerondersteuning voor particulieren en kleine bedrijven.</p>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <div class="card-head">
+            <div class="icon"><i class="fa-solid fa-rotate"></i></div>
+            <h3>Upgrade-service</h3>
+          </div>
+          <p>Upgrade naar Windows 11 en hardware-upgrades zoals SSD en RAM. We regelen back-up, installatie en nazorg.</p>
+          <div class="card-footer">
+            <p class="price">vanaf € 59</p>
+            <a class="btn btn-primary" href="#contact">Meer informatie</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="icon"><i class="fa-brands fa-linux"></i></div>
+            <h3>Linux Oplossingen</h3>
+          </div>
+          <p>Installatie van Linux voor oude computers, inclusief migratie van bestanden en korte training.</p>
+          <div class="card-footer">
+            <p class="price">vanaf € 79</p>
+            <a class="btn btn-primary" href="#contact">Meer informatie</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="icon"><i class="fa-solid fa-user-shield"></i></div>
+            <h3>Beveiliging & Gemak</h3>
+          </div>
+          <p>Firewall, back-upoplossingen en wachtwoordbeheer zodat je veilig online bent.</p>
+          <div class="card-footer">
+            <p class="price">op maat</p>
+            <a class="btn btn-primary" href="#contact">Meer informatie</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="icon"><i class="fa-solid fa-computer"></i></div>
+            <h3>Hulp op Afstand</h3>
+          </div>
+          <p>Snel kleine problemen oplossen via RustDesk – zonder voorrijkosten.</p>
+          <div class="card-footer">
+            <p class="price">vanaf € 9,95/maand</p>
+            <a class="btn btn-primary" href="#contact">Meer informatie</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+            <h3>Workshops Linux</h3>
+          </div>
+          <p>Leer stap voor stap werken met Linux: bureaublad & bestanden, software installeren, updates, back-ups en veilig internetten. Ideaal voor beginners en overstappers.</p>
+          <div class="card-footer">
+            <p class="price">€ 15 p.p.</p>
+            <a class="btn btn-primary" href="#contact">Meer informatie</a>
+          </div>
+        </div>
+
+	  <!-- KAART: Online Check -->
+<div class="card" style="border-radius:18px; padding:22px; background:#fff; box-shadow:0 10px 28px rgba(10,22,50,.08); border:1px solid #e7edf4;">
+  <div style="display:flex; align-items:flex-start; gap:12px;">
+    <div style="background:#eaf2fb; color:#1f4b7a; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px;">🔍</div>
+    <div style="flex:1">
+      <h3 style="margin:0 0 6px; color:#183048; font-size:20px;">Online Check (gratis)</h3>
+      <p style="margin:0; color:#516476;">Direct advies op basis van jouw invoer + onze database.</p>
+    </div>
+  </div>
+
+  <form id="pcslim-check-form" style="margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div>
+      <label class="lbl" for="brand">Merk</label>
+      <input class="inp" id="brand" name="brand" placeholder="Bijv. Dell" required>
+    </div>
+    <div>
+      <label class="lbl" for="model">Model/Type</label>
+      <input class="inp" id="model" name="model" placeholder="Bijv. Inspiron 5570" required>
+    </div>
+    <div>
+      <label class="lbl" for="ram">RAM (GB)</label>
+      <select class="inp" id="ram" name="ram" required>
+        <option value="">Kies…</option>
+        <option>2</option><option>4</option><option>6</option>
+        <option>8</option><option>12</option><option>16</option><option>32</option>
+      </select>
+    </div>
+    <div>
+      <label class="lbl" for="storage_type">Opslag</label>
+      <select class="inp" id="storage_type" name="storage_type" required>
+        <option value="">Kies…</option>
+        <option value="SSD">SSD</option>
+        <option value="HDD">HDD</option>
+        <option value="Onbekend">Onbekend</option>
+      </select>
+    </div>
+    <div>
+      <label class="lbl" for="storage_gb">Opslag (GB)</label>
+      <select class="inp" id="storage_gb" name="storage_gb">
+        <option value="">Kies…</option>
+        <option>120</option><option>240</option><option>256</option>
+        <option>480</option><option>500</option><option>512</option>
+        <option>960</option><option>1000</option><option>1024</option>
+      </select>
+    </div>
+    <div>
+      <label class="lbl" for="cpu_year">Bouwjaar/CPU</label>
+      <select class="inp" id="cpu_year" name="cpu_year" required>
+        <option value="">Kies…</option>
+        <option value="pre2015">≤ 2014</option>
+        <option value="2015-2017">2015–2017</option>
+        <option value="2018-2020">2018–2020</option>
+        <option value="2021plus">2021+</option>
+      </select>
+    </div>
+    <div style="grid-column:1/-1">
+      <label class="lbl">Gebruik</label>
+      <div style="display:flex; gap:10px; flex-wrap:wrap">
+        <label class="chip"><input type="radio" name="use" value="basis" required> Basis</label>
+        <label class="chip"><input type="radio" name="use" value="standaard"> Standaard</label>
+        <label class="chip"><input type="radio" name="use" value="zwaar"> Zwaar</label>
+      </div>
+    </div>
+    <div style="grid-column:1/-1; display:flex; gap:10px; align-items:center;">
+      <button type="submit" class="btn-primary">Geef mijn advies</button>
+      <span id="pcslim-check-note" style="color:#6a7a91"></span>
+    </div>
+  </form>
+
+  <div id="pcslim-check-result" style="margin-top:14px; display:none;"></div>
+</div>
+
+<style>
+  .lbl{display:block; font-weight:600; color:#2d4159; margin:2px 0 6px;}
+  .inp{width:100%; padding:10px 12px; border-radius:10px; border:1px solid #dfe7ef; background:#f8fbfe; color:#1a2a3f;}
+  .inp:focus{outline:none; border-color:#9ac3ff; background:#fff;}
+  .chip{display:inline-flex; gap:8px; align-items:center; padding:8px 12px; border-radius:999px; border:1px solid #dfe7ef; background:#f3f7fb; color:#395172; cursor:pointer;}
+  .chip input{accent-color:#2e66a7}
+  .btn-primary{all:unset; background:#1f4b7a; color:#fff; padding:11px 16px; border-radius:10px; font-weight:700; cursor:pointer;}
+  .pill{display:inline-block; padding:6px 10px; border-radius:999px; font-weight:700; border:1px solid #e5eef6; background:#f6fbff; color:#355b86; margin-right:8px;}
+  .pill.ok{background:#e9f9f0; color:#186a3b; border-color:#c4f0d3}
+  .pill.warn{background:#fff7e6; color:#8a6200; border-color:#ffe6b3}
+  .pill.bad{background:#ffefef; color:#8a1e1e; border-color:#ffc8c8}
+  .panel{background:#f8fbfe; border:1px solid #e5eef6; border-radius:14px; padding:14px;}
+  .kpis{display:flex; gap:8px; flex-wrap:wrap; margin:8px 0}
+  .kpi{background:#fff; border:1px solid #e5eef6; border-radius:10px; padding:8px 10px; color:#4a5f7a}
+  .ctas{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+  .btn-ghost{all:unset; border:1px solid #dfe7ef; color:#274564; background:#fff; padding:10px 14px; border-radius:10px; cursor:pointer;}
+
+
+</style>
+
+<script>
+  (function(){
+    const f = document.getElementById('pcslim-check-form');
+    const note = document.getElementById('pcslim-check-note');
+    const box = document.getElementById('pcslim-check-result');
+
+    f.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      note.textContent = 'Bezig met check…';
+      box.style.display = 'none'; box.innerHTML = '';
+
+      const data = Object.fromEntries(new FormData(f).entries());
+      try{
+        const r = await fetch('/api/check.php', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(data)
+        });
+        const json = await r.json();
+        if (!r.ok) throw new Error(json?.error || 'Serverfout');
+
+        const pill = (tone,txt)=>`<span class="pill ${tone}">${txt}</span>`;
+        const li = arr => (arr||[]).map(x=>`<li>${x}</li>`).join('');
+
+        box.innerHTML = `
+          <div class="panel">
+            <div>${pill(json.badge.tone, json.badge.text)}</div>
+            <h4 style="margin-top:8px">${json.title||'Advies'}</h4>
+            <p>${json.summary||''}</p>
+
+            ${json.kpis?.length ? `<div class="kpis">${json.kpis.map(k=>`<div class="kpi">${k}</div>`).join('')}</div>` : ''}
+
+            ${json.issues?.length ? `<h4>Wat zagen we</h4><ul>${li(json.issues)}</ul>` : ''}
+            ${json.tips?.length ? `<h4>Tips</h4><ul>${li(json.tips)}</ul>` : ''}
+            ${json.actions?.length ? `<h4>Volgende stappen</h4><ul>${li(json.actions)}</ul>` : ''}
+
+            ${json.prices?.length ? `<h4>Indicatieve kosten</h4><ul>${li(json.prices)}</ul>` : ''}
+
+            <div class="ctas">
+              <a class="btn-primary" href="tel:+316-00000000">Bel direct</a>
+              <a class="btn-ghost" href="#contact">Afspraak plannen</a>
+            </div>
+          </div>
+        `;
+        box.style.display = 'block';
+        note.textContent = '';
+      }catch(err){
+        note.textContent = 'Er ging iets mis. Probeer later opnieuw.';
+        console.error(err);
+      }
+    });
+  })();
+</script>
+
+	  
+	  </div>
+
+    </div>
+  </section>
+
+  <!-- Onze beloftes -->
+  <section id="beloftes" class="usp">
+    <div class="container">
+      <div class="section-title" style="color:#fff;margin-bottom:34px">
+        <h2 style="color:#fff">Onze beloftes</h2>
+        <p>Of je nu veel of weinig van computers weet – wij helpen op een manier die bij jóu past.</p>
+      </div>
+      <div class="usp-grid">
+        <div class="usp-box"><i class="fa-solid fa-hand-holding-heart"></i><h3>Rust & Geduld</h3><p>We nemen de tijd en leggen uit in begrijpelijke taal.</p></div>
+        <div class="usp-box"><i class="fa-solid fa-bolt"></i><h3>Snel & Duidelijk</h3><p>Lievere korte uitleg? Ook goed – we regelen het vlot.</p></div>
+        <div class="usp-box"><i class="fa-solid fa-tag"></i><h3>Vaste Prijs</h3><p>Transparant tarief vooraf, dus geen verrassingen.</p></div>
+        <div class="usp-box"><i class="fa-solid fa-shield-heart"></i><h3>Veilig & Vertrouwd</h3><p>Back-up, updates en controle achteraf zijn standaard.</p></div>
+        <div class="usp-box"><i class="fa-solid fa-house-laptop"></i><h3>Aan Huis of Op Afstand</h3><p>Kies wat jou het beste uitkomt.</p></div>
+        <div class="usp-box"><i class="fa-solid fa-person-chalkboard"></i><h3>Jij bepaalt het tempo</h3><p>Van stap-voor-stap tot “fix & klaar”.</p></div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Werkwijze -->
+  <section id="werkwijze">
+    <div class="container">
+      <div class="section-title"><h2>Zo werken wij</h2><p>Eenvoudig en zonder gedoe.</p></div>
+      <div class="aud">
+        <div class="item"><i class="fa-solid fa-clipboard-check"></i><h3>1. Korte check</h3><p>We bekijken samen of Windows 11 kan. Zo niet, dan Linux – veilig en snel.</p></div>
+        <div class="item"><i class="fa-solid fa-screwdriver-wrench"></i><h3>2. Uitvoeren</h3><p>Back-up, installatie en optimalisatie. Jij kiest: rustig uitleggen of snel geregeld.</p></div>
+        <div class="item"><i class="fa-solid fa-thumbs-up"></i><h3>3. Uitleg & nazorg</h3><p>Korte of uitgebreide uitleg. Achteraf nog vragen? We staan klaar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ervaringen -->
+  <section id="ervaringen" style="padding:60px 0;background:#f7f9fc">
+    <div class="container">
+      <div class="section-title"><h2>Ervaringen van klanten</h2></div>
+      <div class="aud">
+        <div class="item"><i class="fa-solid fa-quote-left"></i>
+          <p>“Fijn dat alles rustig werd uitgelegd. Ik durf weer te internetbankieren.”</p>
+          <p><strong>– Rina (72)</strong></p>
+        </div>
+        <div class="item"><i class="fa-solid fa-quote-left"></i>
+          <p>“Snel geregeld, korte uitleg en klaar. Laptop voelt weer nieuw.”</p>
+          <p><strong>– Omar (29)</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tarieven -->
+  <section id="tarieven">
+    <div class="container">
+      <div class="section-title">
+        <h2>Transparante Prijzen</h2>
+        <p>Heldere tarieven zonder verborgen kosten.</p>
+      </div>
+      <div class="pricing">
+        <!-- Windows 11 Upgrade -->
+        <div class="price-card">
+          <div class="price-top"><h3>Windows 11 Upgrade</h3></div>
+          <div class="price-body">
+            <div class="money">€59–€89</div>
+            <ul class="features">
+              <li>Compatibiliteitscheck</li>
+              <li>Uitvoeren upgrade</li>
+              <li>Data behouden</li>
+              <li>Na-controle</li>
+            </ul>
+          </div>
+          <div class="price-cta"><a class="btn btn-primary" href="#contact">Afspraak maken</a></div>
+        </div>
+
+        <!-- Linux Installatie (Populair) -->
+        <div class="price-card" style="position:relative;transform:translateY(-6px);border:2px solid var(--accent)">
+          <div class="popular">Populair</div>
+          <div class="price-top"><h3>Linux Installatie</h3></div>
+          <div class="price-body">
+            <div class="money">€79</div>
+            <ul class="features">
+              <li>Installatie Linux</li>
+              <li>Keuze uit distributies</li>
+              <li>Bestanden migreren</li>
+              <li>Basistraining (1 uur)</li>
+            </ul>
+          </div>
+          <div class="price-cta"><a class="btn btn-alt" href="#contact">Afspraak maken</a></div>
+        </div>
+
+        <!-- Support -->
+        <div class="price-card">
+          <div class="price-top"><h3>PC Slim Support</h3></div>
+          <div class="price-body">
+            <div class="money">€9,95/maand</div>
+            <ul class="features">
+              <li>Onbeperkt advies</li>
+              <li>Hulp op afstand</li>
+              <li>20 minuten per maand</li>
+              <li>Geen voorrijkosten</li>
+            </ul>
+          </div>
+          <div class="price-cta"><a class="btn btn-primary" href="#contact">Abonnement afsluiten</a></div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-title"><h2>Veelgestelde vragen</h2></div>
+      <details>
+        <summary>Ik heb weinig verstand van computers. Kan ik meekijken?</summary>
+        <p>Ja. We leggen stap voor stap uit en schrijven desnoods een korte handleiding mee. Jij bepaalt het tempo.</p>
+      </details>
+      <details>
+        <summary>Wat als Windows 11 niet kan?</summary>
+        <p>Dan zetten we je veilig over op Linux. Vaak voelt een oudere pc daarmee weer snel en soepel aan.</p>
+      </details>
+      <details>
+        <summary>Raak ik gegevens kwijt?</summary>
+        <p>Nee. We maken eerst een back-up en controleren de herstelbaarheid voordat we beginnen.</p>
+      </details>
+      <details>
+        <summary>Kan het ook op afstand?</summary>
+        <p>Ja, voor kleine problemen gebruiken we RustDesk (veilig en versleuteld). Zo help ik snel, zonder voorrijkosten.</p>
+      </details>
+      <details>
+        <summary>Wat kost het precies?</summary>
+        <p>Je krijgt vooraf een vaste prijs. Geen verborgen kosten.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-title">
+        <h2>Neem Contact Op</h2>
+        <p>Vragen of een afspraak maken? Stuur ons een bericht – we reageren snel.</p>
+      </div>
+      <div class="contact">
+        <div class="info">
+          <h3>Onze gegevens</h3>
+          <p><i class="fa-solid fa-phone"></i> 06-12345678</p>
+          <p><i class="fa-solid fa-envelope"></i> info@pcslim.nl</p>
+          <p><i class="fa-solid fa-location-dot"></i> Regio [Uw Regio]</p>
+          <p><i class="fa-regular fa-clock"></i> Ma-Vr: 9:00 – 18:00</p>
+          <div style="margin-top:14px">
+            <strong>Volg ons</strong><br>
+            <a href="#" aria-label="Facebook" style="margin-right:10px"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#" aria-label="LinkedIn" style="margin-right:10px"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+        </div>
+        <form onsubmit="event.preventDefault(); alert('Bedankt! We nemen snel contact met je op.');">
+          <div class="grid-2">
+            <div class="form-row">
+              <label for="naam">Uw naam</label>
+              <input id="naam" required placeholder="Naam">
+            </div>
+            <div class="form-row">
+              <label for="email">Uw e-mailadres</label>
+              <input id="email" type="email" required placeholder="naam@voorbeeld.nl">
+            </div>
+            <div class="form-row">
+              <label for="tel">Uw telefoonnummer</label>
+              <input id="tel" type="tel" placeholder="06-…">
+            </div>
+            <div class="form-row">
+              <label for="dienst">Selecteer een dienst</label>
+              <select id="dienst">
+                <option>Upgrade-service</option>
+                <option>Linux Oplossingen</option>
+                <option>Beveiliging & Gemak</option>
+                <option>Hulp op Afstand</option>
+                <option>Workshops Linux</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="tempo">Hoe wil je geholpen worden?</label>
+            <select id="tempo" required>
+              <option>Rustig & stap-voor-stap (extra uitleg)</option>
+              <option>Snel & duidelijk (korte uitleg)</option>
+              <option>Weet ik nog niet – adviseer mij</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label for="bericht">Uw bericht</label>
+            <textarea id="bericht" placeholder="Beschrijf kort uw vraag of probleem…"></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit" aria-label="Verstuur bericht">Verstuur bericht</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="foot">
+        <div>
+          <div class="brand">
+            <div class="logo">PC</div>
+            <div class="name">PC <span>Slim</span></div>
+          </div>
+          <p style="margin-top:8px">Wij maken technologie toegankelijk, betaalbaar en betrouwbaar — voor iedereen.</p>
+        </div>
+        <div>
+          <h4>Diensten</h4>
+          <ul style="list-style:none;padding:0;margin:0">
+            <li><a href="#diensten">Upgrade-service</a></li>
+            <li><a href="#diensten">Linux Oplossingen</a></li>
+            <li><a href="#diensten">Beveiliging & Gemak</a></li>
+            <li><a href="#diensten">Hulp op Afstand</a></li>
+            <li><a href="#diensten">Workshops</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Links</h4>
+          <ul style="list-style:none;padding:0;margin:0">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#beloftes">Beloftes</a></li>
+            <li><a href="#werkwijze">Werkwijze</a></li>
+            <li><a href="#ervaringen">Ervaringen</a></li>
+            <li><a href="#tarieven">Tarieven</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul style="list-style:none;padding:0;margin:0">
+            <li>📞 06-12345678</li>
+            <li>✉️ info@pcslim.nl</li>
+            <li>📍 Regio [Uw Regio]</li>
+          </ul>
+        </div>
+      </div>
+      <div class="copy">© <span id="year"></span> PC Slim. Alle rechten voorbehouden.</div>
+    </div>
+  </footer>
+
+  <script>
+    // smooth scroll
+    document.querySelectorAll('header nav a').forEach(a=>{
+      a.addEventListener('click',e=>{
+        const href=a.getAttribute('href');
+        if(href && href.startsWith('#')){
+          e.preventDefault();
+          document.querySelector(href)?.scrollIntoView({behavior:'smooth',block:'start'});
+        }
+      });
+    });
+    document.getElementById('year').textContent=new Date().getFullYear();
+  </script>
+</body>
+</html>
