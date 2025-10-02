@@ -142,3 +142,4 @@ echo json_encode([
   'kpis'    => $kpis,
   'prices'  => $prices,
 ], JSON_UNESCAPED_UNICODE);
+
